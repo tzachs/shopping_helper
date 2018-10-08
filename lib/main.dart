@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 void main() => runApp(new MyApp());
 
@@ -149,26 +150,33 @@ class _CompareForm extends State<CompareForm> {
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        double _quanA = double.parse(quantityA.text);
-                        double _weightA = double.parse(weightA.text);
-                        double _discountA = 100.0;
-                        if (discountA.text != null) {
-                          _discountA -= double.parse(discountA.text);
+                        num _quanA = num.parse(quantityA.text);
+                        num _weightA = num.parse(weightA.text);
+                        num _totalA = _quanA * _weightA;
+                        num _discountA = 100.0;
+                        if (discountA.text != null &&
+                            discountA.text.isNotEmpty) {
+                          _discountA -= num.parse(discountA.text);
                         }
                         _discountA /= 100.0;
-                        double _priceA = double.parse(priceA.text) * _discountA;
+                        num _priceA = num.parse(priceA.text) * _discountA;
+                        _totalA /= _priceA;
 
-                        double _quanB = double.parse(quantityB.text);
-                        double _weightB = double.parse(weightB.text);
-                        double _discountB = 100.0;
-                        if (discountB.text != null) {
-                          _discountB -= double.parse(discountB.text);
+                        num _quanB = num.parse(quantityB.text);
+                        num _weightB = num.parse(weightB.text);
+
+                        num _discountB = 100.0;
+                        if (discountB.text != null &&
+                            discountB.text.isNotEmpty) {
+                          _discountB -= num.parse(discountB.text);
                         }
                         _discountB /= 100.0;
-                        double _priceB = double.parse(priceB.text) * _discountB;
+                        num _priceB = num.parse(priceB.text) * _discountB;
+                        num _totalB = _quanB * _weightB;
+                        _totalB /= _priceB;
 
                         String answer = "Choose item: ";
-                        if (_priceA < _priceB) {
+                        if (_totalA > _totalB) {
                           answer += nameA.text;
                         } else {
                           answer += nameB.text;
